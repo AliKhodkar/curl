@@ -2718,17 +2718,16 @@ sub clearlocks {
 #
 sub cleardir {
     my $dir = $_[0];
-    my $done = 1;
+    my $done = 1;  # success
     my $file;
 
     # Get all files
     opendir(my $dh, $dir) ||
         return 0; # can't open dir
     while($file = readdir($dh)) {
-        if(($file !~ /^(\.|\.\.)\z/)) {
-            if(-d "$dir/$file" &&
-            # Don't clear the $PIDDIR since those need to live beyond one test
-               $PIDDIR ne "$dir/$file") {
+        # Don't clear the $PIDDIR since those need to live beyond one test
+        if(($file !~ /^(\.|\.\.)\z/) && "$dir/$file" ne $PIDDIR) {
+            if(-d "$dir/$file") {
                 if(!cleardir("$dir/$file")) {
                     $done = 0;
                 }

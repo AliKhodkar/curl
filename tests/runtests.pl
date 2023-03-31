@@ -2728,7 +2728,7 @@ sub cleardir {
         if(($file !~ /^(\.|\.\.)\z/)) {
             if(-d "$dir/$file" &&
             # Don't clear the $PIDDIR since those need to live beyond one test
-               Cwd::abs_path($PIDDIR) ne Cwd::abs_path("$dir/$file")) {
+               $PIDDIR ne "$dir/$file") {
                 if(!cleardir("$dir/$file")) {
                     $done = 0;
                 }
